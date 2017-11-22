@@ -25,9 +25,12 @@ io.on('connection', (socket) => {
 
     socket.broadcast.emit('newMessage', generateMessage('Admin', 'New user joined'));
 
-    socket.on('createMessage', (message) => {
+    socket.on('createMessage', (message, callback) => {
         console.log('New message: ', message);
         io.emit('newMessage', generateMessage(message.from, message.text));
+        // aknowledgement by the server console.log('got it') on the client console
+        // send data back by providing one argument inside the callback()
+        callback('This is from the server');
         // socket.broadcast.emit('newMessage', {
         //     from: message.from,
         //     text: message.text,
@@ -40,6 +43,7 @@ io.on('connection', (socket) => {
     });
 });
 
+// cenas
 server.listen(port, () => {
     console.log(`Server is up on port ${port}`);
 });
