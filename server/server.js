@@ -32,7 +32,7 @@ io.on('connection', (socket) => {
         io.emit('newMessage', generateMessage(message.from, message.text));
         // aknowledgement by the server console.log('got it') on the client console
         // send data back by providing one argument inside the callback()
-        // callback('This is from the server');
+        callback();
     });
 
     socket.on('createLocationMessage', (coords) => {
