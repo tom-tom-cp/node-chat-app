@@ -5,6 +5,8 @@ $(document).ready(function() {
     var socket = io();
     var locationButton = $('#sendLocation');
     var messageTextBox = $('[name=message]');
+    var messageTemplate = $('#messageTemplate').html();
+    var locationTemplate = $('#locationMessageTemplate').html();
 
 
 
@@ -20,26 +22,43 @@ $(document).ready(function() {
     // receive message from server
     socket.on('newMessage', function(message) {
         var formattedTime = moment(message.createdAt).format('h:mm a');
-        var li = $('<li></li>');
-        // set text content
-        li.text(`${message.from} ${formattedTime}: ${message.text}`);
 
-        // append to li
-        $('#messages').append(li);
+        var html = Mustache.render(messageTemplate, {
+            text: message.text,
+            from: message.from,
+            createdAt: formattedTime
+        });
+
+
+        $('#messages').append(html);
+        // var li = $('<li></li>');
+        // // set text content
+        // li.text(`${message.from} ${formattedTime}: ${message.text}`);
+        //
+        // // append to li
+        // $('#messages').append(li);
     });
 
     socket.on('newLocationMessage', function(message) {
         var formattedTime = moment(message.createdAt).format('h:mm a');
-        var li = $('<li></li>');
-        var anchor = $('<a target="_blank">My current location</a>');
 
-        li.text(`${message.from} ${formattedTime}: `);
+        var html = Mustache.render(locationTemplate, {
+            url: message.url,
+            from: message.from,
+            createdAt: formattedTime
+        });
 
-        anchor.attr('href', message.url);
-
-        li.append(anchor);
-
-        $('#messages').append(li);
+        $('#messages').append(html);
+        // var li = $('<li></li>');
+        // var anchor = $('<a target="_blank">My current location</a>');
+        //
+        // li.text(`${message.from} ${formattedTime}: `);
+        //
+        // anchor.attr('href', message.url);
+        //
+        // li.append(anchor);
+        //
+        // $('#messages').append(li);
     });
 
     $('#messageForm').on('submit', function(e) {
