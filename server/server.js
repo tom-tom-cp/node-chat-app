@@ -1,8 +1,9 @@
-const path                  = require('path'),
-      express               = require('express'),
-      socketIO              = require('socket.io'),
-      http                  = require('http'),
-      {generateMessage, generateLocationMessage}     = require('./utils/message');
+const path                          = require('path'),
+      express                       = require('express'),
+      socketIO                      = require('socket.io'),
+      http                          = require('http'),
+      {generateMessage, 
+        generateLocationMessage}    = require('./utils/message');
 
 
 const publicPath = path.join(__dirname, '../public');
