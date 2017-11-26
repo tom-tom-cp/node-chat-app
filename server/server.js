@@ -60,16 +60,24 @@ io.on('connection', (socket) => {
 
     // receive message from client
     socket.on('createMessage', (message, callback) => {
-        console.log('New message: ', message);
-        // emite generated message via method generateMessage
-        io.emit('newMessage', generateMessage(message.from, message.text));
+        var user = users.getUser(socket.id);
+
+        if (user && isRealString(message.text)) {
+            // emit message to user's room via method generateMessage
+            io.to(user.room).emit('newMessage', generateMessage(user.name, message.text));
+        }
+
         // aknowledgement by the server console.log('got it') on the client console
         // send data back by providing one argument inside the callback()
         callback();
     });
 
     socket.on('createLocationMessage', (coords) => {
-        io.emit('newLocationMessage', generateLocationMessage('Admin', coords.latitude, coords.longitude));
+        var user = users.getUser(socket.id);
+
+        if (user) {
+            io.to(user.room).emit('newLocationMessage', generateLocationMessage(user.name, coords.latitude, coords.longitude));
+        }
     });
 
     socket.on('disconnect', () => {

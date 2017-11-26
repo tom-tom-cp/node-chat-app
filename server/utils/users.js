@@ -12,8 +12,11 @@ class Users {
     }
 
     removeUser(id) {
+        // filter array to find user = id
         var user =  this.users.filter((user) => user.id === id)[0];
+
         if (user) {
+            // remove user from array
             this.users = this.users.filter((user) => user.id !== id);
         }
 
