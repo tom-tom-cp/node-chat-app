@@ -47,7 +47,7 @@ io.on('connection', (socket) => {
 
         socket.join(params.room); // user joins a room
         users.removeUser(socket.id); // remove user from any potential previous rooms
-        users.addUser(socket.id, params.name, params.room); // add him to the new room
+        users.addUser(socket.id, params.name, params.room); // add him to the list
 
         io.to(params.room).emit('updateUserList', users.getUserList(params.room)); // update user list for params.room
 
